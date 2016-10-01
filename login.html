@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="icon" href="img/favicon.ico" mce_href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+<div class="header">
+    <div class="top">
+        <div class="logo">
+            <div class="logoImg"><a href="index.html"><img src="img/icon.png" alt=""></a></div>
+            <div class="wel">欢迎注册</div>
+        </div>
+        <div class="login">
+            已有账号<a href="index.html">请登录</a>
+        </div>
+    </div>
+</div>
+<div class="mid">
+    <div id="register">
+        <div class="left">
+            <div id="user">
+                <em>用户名</em>
+                <input type="text" placeholder="您的账户名和登录名">
+                <span></span>
+            </div>
+            <div id="pass">
+                <em>设置密码</em>
+                <input type="password" placeholder="建议至少使用两种字符组合">
+                <span></span>
+                <em id="repE">重复密码</em>
+                <input id="rep" type="password" placeholder="请再次输入密码">
+                <span></span>
+            </div>
+            <div id="phone">
+                <em>手机号码</em>
+                <input type="text" placeholder="建议使用常用手机">
+                <span></span>
+            </div>
+            <div id="code">
+                <em>验证码</em>
+                <input type="text" placeholder="请输入验证码">
+                <span id="cp1"></span><span id="cp2"></span>
+            </div>
+            <div id="rightNow">
+                <div id="loginSubmit"></div>
+                <div id="sub">立即注册</div>
+            </div>
+        </div>
+    </div>
+    <div id="right">
+        <div id="mobile"></div>
+        <div id="company-reg">
+            <i></i><a href="">企业用户注册</a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
+<script>
+    var user = document.getElementById("user");
+    var userInp = user.getElementsByTagName("input")[0];
+    var userSpan = user.getElementsByTagName("span")[0];
+    var pass = document.getElementById("pass");
+    var passInp = pass.getElementsByTagName("input")[0];
+    var passSpan = pass.getElementsByTagName("span")[0];
+    var passInp1 = pass.getElementsByTagName("input")[1];
+    var passSpan1 = pass.getElementsByTagName("span")[1];
+
+    var phone = document.getElementById("phone");
+    var phoneInp = phone.getElementsByTagName("input")[0];
+    var phoneSpan = phone.getElementsByTagName("span")[0];
+
+    var code = document.getElementById("code");
+    var codeInp = code.getElementsByTagName("input")[0];
+    var codeSpan = code.getElementsByTagName("span")[0];
+    var codeSpan1 = code.getElementsByTagName("span")[1];
+
+    var register = document.getElementById("register");
+    var oInput = register.getElementsByTagName("input");
+    var oSpan = register.getElementsByTagName("span");
+    var sub = document.getElementById("sub");
+    var loginSubmit = document.getElementById("loginSubmit");
+
+    for (var i = 0, len = oInput.length; i < len; i++) {
+        oInput[i].onfocus = function () {
+            this.className = "ok";
+        }
+    }
+    //用户名
+    userInp.onblur = function () {
+        var reg = /^[a-zA-Z0-9_-]{4,20}$/ ;
+        var val = userInp.value;
+        if (val.length == 0 || !reg.test(val)) {
+            this.className = "error";
+            userSpan.innerHTML = val.length === 0 ? "请输入您的用户名" : "支持数字字母- _的组合 4-20个字符";
+            return;
+        }
+        this.className = "";
+        userSpan.innerHTML = "";
+    };
+    //密码
+
+    passInp.onblur = function () {
+        var reg = /^[a-zA-Z0-9_-]{6,20}$/;
+        var val = passInp.value;
+        if (val.length == 0 || !reg.test(val)) {
+            this.className = "error";
+            passSpan.innerHTML = val.length === 0 ? "请输入您的密码" : "支持数字字母- _的组合 6-20个字符";
+            return;
+        }
+        this.className = "";
+        passSpan.innerHTML = "";
+    };
+    //重复密码
+    passInp1.onblur = function () {
+        console.log(passInp.value);
+        if (passInp1.value !== passInp.value || passInp1.value == "") {
+            this.className = "error";
+            passSpan1.innerHTML = "两次输入的不一样";
+            return;
+        }
+        else if (passInp1.value == passInp.value) {
+            this.className = "";
+            passSpan1.innerHTML = "";
+        }
+        console.log(passInp1.value)
+    };
+    //手机号
+    phoneInp.onblur = function () {
+        var reg = /^1\d{10}$/;
+        var val = phoneInp.value;
+        if (val.length == 0 || !reg.test(val)) {
+            this.className = "error";
+            phoneSpan.innerHTML = val.length === 0 ? "请输入你的手机号" : "格式错误";
+            return;
+        }
+        this.className = "";
+        phoneSpan.innerHTML = "";
+    };
+    //验证码
+    function getCode() {
+        var area = "abcdefghijklmnopqrstuvwxyz" +
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                "0123456789";
+        var str = "";
+        while (str.length < 4) {
+            var ran = Math.round(Math.random() * 61);
+            var temp = area[ran];
+            if (str.indexOf(temp) == -1) {
+                str += temp;
+            }
+        }
+        codeSpan.innerHTML = str;
+    }
+    getCode();
+    codeSpan.onclick = getCode;
+    codeInp.onblur = function () {
+        loginSubmit.innerHTML = "";
+        var v = codeInp.value.toLowerCase();
+        var i = codeSpan.innerHTML.toLowerCase();
+        if (v !== i) {
+            this.className = "error";
+            codeSpan1.innerHTML = "验证码输入错误";
+            return;
+        }
+        this.className = "";
+        codeSpan1.innerHTML = "";
+    };
+    //注册
+    sub.onclick = function () {
+        for (var i = 0; i < oInput.length; i++) {
+            if (oInput[i].value == "") {
+                oInput[i].className = "error";
+                codeSpan1.innerHTML = "";
+                loginSubmit.innerHTML = "请完善您的注册信息";
+                return;
+            }
+        }
+        loginSubmit.innerHTML = "";
+        alert("恭喜恭喜，注册成功")
+    }
+</script>
